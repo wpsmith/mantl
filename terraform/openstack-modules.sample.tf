@@ -35,6 +35,11 @@ module "ssh-key" {
   keypair_name = "mantl-key"
 }
 
+module "secgroup" {
+  source = "./terraform/openstack/secgroup"
+  secgroup_name = "mantl-secgroup"
+}
+
 #Create a network with an externally attached router
 module "network" {
   source = "./terraform/openstack/network"
@@ -74,6 +79,7 @@ module "instances-control" {
   network_uuid = "${module.network.network_uuid}"
   floating_ips = "${module.floating-ips-control.ip_list}"
   keypair_name = "${module.ssh-key.keypair_name}"
+  security_groups = "${module.secgroup.secgroup_name}"
   flavor_name = "${var.control_flavor_name}"
   image_name = "${var.image_name}"
   ssh_user = "${var.ssh_user}"
@@ -90,6 +96,7 @@ module "instances-worker" {
   network_uuid = "${module.network.network_uuid}"
   floating_ips = "${module.floating-ips-worker.ip_list}"
   keypair_name = "${module.ssh-key.keypair_name}"
+  security_groups = "${module.secgroup.secgroup_name}"
   flavor_name = "${var.worker_flavor_name}"
   image_name = "${var.image_name}"
   ssh_user = "${var.ssh_user}"
@@ -106,6 +113,7 @@ module "instances-edge" {
   network_uuid = "${module.network.network_uuid}"
   floating_ips = "${module.floating-ips-edge.ip_list}"
   keypair_name = "${module.ssh-key.keypair_name}"
+  security_groups = "${module.secgroup.secgroup_name}"
   flavor_name = "${var.edge_flavor_name}"
   image_name = "${var.image_name}"
   ssh_user = "${var.ssh_user}"
