@@ -2,6 +2,8 @@ variable subnet_cidr { default = "10.0.0.0/24" }
 variable public_key { default = "/home/you/.ssh/id_rsa.pub" }
 
 variable name { default = "mantl" }     # resources will start with "mantl-"
+variable host_domain { default = "novalocal" } # set persistent hostname
+
 variable control_count { default = "3"} # mesos masters, zk leaders, consul servers
 variable worker_count { default = "3"}  # worker nodes
 variable edge_count { default = "2"}    # load balancer nodes
@@ -65,6 +67,7 @@ module "floating-ips-edge" {
 module "instances-control" {
   source = "./terraform/openstack/instance"
   name = "${var.name}"
+  host_domain = "${var.host_domain}"
   count = "${var.control_count}"
   role = "control"
   volume_size = "${var.control_volume_size}"
@@ -79,6 +82,7 @@ module "instances-control" {
 module "instances-worker" {
   source = "./terraform/openstack/instance"
   name = "${var.name}"
+  host_domain = "${var.host_domain}"
   count = "${var.worker_count}"
   volume_size = "${var.worker_volume_size}"
   count_format = "%03d"
@@ -94,6 +98,7 @@ module "instances-worker" {
 module "instances-edge" {
   source = "./terraform/openstack/instance"
   name = "${var.name}"
+  host_domain = "${var.host_domain}"
   count = "${var.edge_count}"
   volume_size = "${var.edge_volume_size}"
   count_format = "%02d"
