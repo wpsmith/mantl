@@ -23,6 +23,10 @@ variable control_flavor_name { default = "your-XLarge" }
 variable worker_flavor_name { default = "your-Large" }
 variable edge_flavor_name { default = "your-Small" }
 
+variable control_volume_size { default = "50" }
+variable worker_volume_size { default = "100" }
+variable edge_volume_size { default = "20" }
+
 module "ssh-key" {
   source = "./terraform/openstack/keypair_v2"
   public_key = "${var.public_key}"
@@ -63,7 +67,7 @@ module "instances-control" {
   name = "${var.name}"
   count = "${var.control_count}"
   role = "control"
-  volume_size = "50"
+  volume_size = "${var.control_volume_size}"
   network_uuid = "${module.network.network_uuid}"
   floating_ips = "${module.floating-ips-control.ip_list}"
   keypair_name = "${module.ssh-key.keypair_name}"
@@ -76,7 +80,7 @@ module "instances-worker" {
   source = "./terraform/openstack/instance"
   name = "${var.name}"
   count = "${var.worker_count}"
-  volume_size = "100"
+  volume_size = "${var.worker_volume_size}"
   count_format = "%03d"
   role = "worker"
   network_uuid = "${module.network.network_uuid}"
@@ -91,7 +95,7 @@ module "instances-edge" {
   source = "./terraform/openstack/instance"
   name = "${var.name}"
   count = "${var.edge_count}"
-  volume_size = "20"
+  volume_size = "${var.edge_volume_size}"
   count_format = "%02d"
   role = "edge"
   network_uuid = "${module.network.network_uuid}"
