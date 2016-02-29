@@ -3,7 +3,7 @@ variable public_key { default = "/home/you/.ssh/id_rsa.pub" }
 
 variable name { default = "mantl" }     # resources will start with "mantl-"
 variable control_count { default = "3"} # mesos masters, zk leaders, consul servers
-variable worker_count { default = "5"}  # worker nodes
+variable worker_count { default = "3"}  # worker nodes
 variable edge_count { default = "2"}    # load balancer nodes
 
 # Run 'nova network-list' to get these names and values
@@ -23,9 +23,9 @@ variable control_flavor_name { default = "your-XLarge" }
 variable worker_flavor_name { default = "your-Large" }
 variable edge_flavor_name { default = "your-Small" }
 
-variable control_volume_size { default = "50" }
-variable worker_volume_size { default = "100" }
-variable edge_volume_size { default = "20" }
+variable control_volume_size { default = "10" }
+variable worker_volume_size { default = "20" }
+variable edge_volume_size { default = "5" }
 
 module "ssh-key" {
   source = "./terraform/openstack/keypair_v2"
