@@ -14,6 +14,8 @@ variable floating_ip_pool { default = "name-of-your-floating-ip-pool" }
 # Run 'nova image-list' to get your image name
 variable image_name  { default = "your-CentOS-7" }
 
+variable ssh_user { default = "centos" }
+
 #  Openstack flavors control the size of the instance, i.e. m1.xlarge.
 #  Run 'nova flavor-list' to list the flavors in your environment
 #  Below are typical settings for mantl
@@ -67,6 +69,7 @@ module "instances-control" {
   keypair_name = "${module.ssh-key.keypair_name}"
   flavor_name = "${var.control_flavor_name}"
   image_name = "${var.image_name}"
+  ssh_user = "${var.ssh_user}"
 }
 
 module "instances-worker" {
@@ -81,6 +84,7 @@ module "instances-worker" {
   keypair_name = "${module.ssh-key.keypair_name}"
   flavor_name = "${var.worker_flavor_name}"
   image_name = "${var.image_name}"
+  ssh_user = "${var.ssh_user}"
 }
 
 module "instances-edge" {
@@ -95,5 +99,6 @@ module "instances-edge" {
   keypair_name = "${module.ssh-key.keypair_name}"
   flavor_name = "${var.edge_flavor_name}"
   image_name = "${var.image_name}"
+  ssh_user = "${var.ssh_user}"
 }
 
