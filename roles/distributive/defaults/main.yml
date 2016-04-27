@@ -1,7 +1,5 @@
 ---
 distributive_package: distributive-0.2.5-1
-distributive_interval: 1m
-distributive_timeout: 30s
 
 checklist_versions:
   calico: 0.2.4-1
