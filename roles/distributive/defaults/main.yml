@@ -24,3 +24,25 @@ checklist_versions:
   mesos: 0.2.4-1
   vault: 0.2.4-1
   zookeeper: 0.2.4-1
+
+consul_config_versions:
+  calico: 0.1.0-1
+  chronos: 0.1.0-1
+  collectd: 0.1.0-1
+  collectd-docker: 0.1.0-1
+  collectd-marathon: 0.1.0-1
+  collectd-zookeeper: 0.1.0-1
+  common: 0.1.0-1
+  consul: 0.1.0-1
+  consul-template: 0.1.0-1
+  dnsmasq: 0.1.0-1
+  docker: 0.1.0-1
+  etcd: 0.1.0-1
+  haproxy: 0.1.0-1
+  logrotate: 0.1.0-1
+  logstash: 0.1.0-1
+  mantlui: 0.1.0-1
+  marathon: 0.1.0-1
+  mesos: 0.1.0-1
+  vault: 0.1.0-1
+  zookeeper: 0.1.0-1
