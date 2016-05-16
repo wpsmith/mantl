@@ -24,8 +24,7 @@ after_script:
   # rsync logs from the cluster to .mantl-ci-log
   - mkdir -p .mantl-ci-log/$TF_VAR_build_number
   - if [ $TRAVIS_TEST_RESULT == 1 ]; do rysnc --super -a centos@$(plugins/inventory/terraform.py --hostfile | awk '/control-01/ {print $1}'):/var/log/* .mantl-ci-log/$TF_VAR_build_number; fi
-- docker run $DOCKER_ARGS -v $(pwd)/testing:/local -v $(pwd):/mantl $DOCKER_SECRETS
-  $DOCKER_IMAGE "python docker.py ci-destroy"
+  - docker run $DOCKER_ARGS -v $(pwd)/testing:/local -v $(pwd):/mantl $DOCKER_SECRETS $DOCKER_IMAGE "python docker.py ci-destroy"
 sudo: required
 services:
 - docker
