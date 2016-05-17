@@ -21,9 +21,6 @@ script:
   - docker run $DOCKER_ARGS -v $(pwd)/testing:/local -v $(pwd):/mantl $DOCKER_SECRETS $DOCKER_IMAGE "python docker.py ci-build"
 
 after_script:
-  # rsync logs from the cluster to .mantl-ci-log
-  - mkdir -p .mantl-ci-log/$TF_VAR_build_number
-  - if [ $TRAVIS_TEST_RESULT == 1 ]; do rsync --super -a centos@$(plugins/inventory/terraform.py --hostfile | awk '/control-01/ {print $1}'):/var/log/* .mantl-ci-log/$TF_VAR_build_number; else echo "Skipping cache step for successful build";  fi
   - docker run $DOCKER_ARGS -v $(pwd)/testing:/local -v $(pwd):/mantl $DOCKER_SECRETS $DOCKER_IMAGE "python docker.py ci-destroy"
 sudo: required
 services:
@@ -48,3 +45,7 @@ before_install:
 cache:
   directories:
     - .mantl-ci-log
+before_cache:
+  # rsync logs from the cluster to .mantl-ci-log
+  - mkdir -p .mantl-ci-log/$TF_VAR_build_number
+  - if [ $TRAVIS_TEST_RESULT == 1 ]; do rsync --super -a centos@$(plugins/inventory/terraform.py --hostfile | awk '/control-01/ {print $1}'):/var/log/* .mantl-ci-log/$TF_VAR_build_number; else echo "Skipping cache step for successful build";  fi
