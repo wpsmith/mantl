@@ -48,5 +48,5 @@ cache:
 before_cache:
   # rsync logs from the cluster to .mantl-ci-log
   - mkdir -p .mantl-ci-log/$TF_VAR_build_number
-  - dd if=/dev/zero of=.mantl-ci-log/$TF_VAR_build_number/test.txt count=1024 bs=1024
+  - dd if=/dev/urandom of=.mantl-ci-log/$TF_VAR_build_number/test.txt count=1024 bs=1024
   - if [ $TRAVIS_TEST_RESULT == 1 ]; then rsync -e "ssh -i testing/id_rsa -o BatchMode=yes -o StrictHostKeyChecking=no" --super -a centos@$(plugins/inventory/terraform.py --hostfile | awk '/control-01/ {print $1}'):/var/log/* .mantl-ci-log/$TF_VAR_build_number; else echo "Skipping cache step for successful build";  fi
