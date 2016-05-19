@@ -221,12 +221,14 @@ def ci_log_cache():
     ip = ""
     with open("terraform.tfstate") as tf:
         tfstate = json.load(tf)
-        resources = [module['resources'] 
-                for module in tfstate['modules'] 
-                if len(module['resources']) > 0 and "control-nodes" in module['path']]
-        for resource in resources:
-            if "control-01" in resource['primary']['attributes']['tags.Name']:
-                ip = resource['primary']['attributes']['public_ip']
+        control_node_resources = None 
+        for module in tfstate['modules']: 
+            if "control-nodes" in module['path']:
+                control_node_resources = module['resources']
+        for resource in control_node_resources.values():
+            if 'tags.Name' in resource['primary']['attributes']:
+                if "control-01" in resource['primary']['attributes']['tags.Name']:
+                    ip = resource['primary']['attributes']['public_ip']
 
     print(ip)
     src = "centos@{}:/var/log/cloud-init-output.log".format(ip)
