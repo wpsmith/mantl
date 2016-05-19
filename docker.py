@@ -224,7 +224,7 @@ def ci_log_cache():
             idx = host.index(" ")
             ip = host[:idx]
 
-    src = "centos@{}:/var/log/*".format(ip)
+    src = "centos@{}:/var/log/cloud-init-output.log".format(ip)
     dest = ".mantl-ci-log/{}".format(os.environ['TF_VAR_build_number'])
     rsync_cmd = [
         "rsync", "--super", "-a", src, dest, 
