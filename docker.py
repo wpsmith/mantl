@@ -211,6 +211,29 @@ rm -fr {commit}'
     exit(call(split(destroy_cmd)))
 
 
+def ci_log_cache():
+    """Fetch logs from the cluster and upload them to an s3 bucket"""
+    link_or_generate_ssh_keys()
+    call("ssh-add")
+    
+    ip = ""
+    hostfile = check_output(["plugins/inventory/terraform.py", "--hostfile"])
+
+    for host in hostfile:
+        if "control-01" in host:
+            idx = host.index(" ")
+            ip = host[:idx]
+
+    src = "centos@{}:/var/log/*".format(ip)
+    dest = ".mantl-ci-log/{}".format(os.environ['TF_VAR_build_number'])
+    rysnc_cmd = [
+        "rsync", "--super", "-a", src, , dest, 
+        "-e", "ssh -i /local/ci -o BatchMode=yes -o StrictHostKeyChecking=no"
+        ]
+
+    exit(call(rsync_cmd))
+
+
 if __name__ == "__main__":
 
     logfmt = "%(asctime)s  %(levelname)s  %(message)s"
@@ -227,6 +250,8 @@ if __name__ == "__main__":
             ci_build()
         elif argv[1] == 'ci-destroy':
             ci_destroy()
+        elif argv[1] == 'ci-log-cache':
+            ci_log_cache()
         else:
             logging.critical("Usage: docker.py [CMD]")
             exit(1)
