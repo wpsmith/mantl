@@ -228,6 +228,7 @@ def ci_log_cache():
             if "control-01" in resource['primary']['attributes']['tags.Name']:
                 ip = resource['primary']['attributes']['public_ip']
 
+    print(ip)
     src = "centos@{}:/var/log/cloud-init-output.log".format(ip)
     dest = ".mantl-ci-log/{}".format(os.environ['TF_VAR_build_number'])
     rsync_cmd = [
@@ -235,6 +236,7 @@ def ci_log_cache():
         "-e", "ssh -i /root/.ssh/id_rsa -o BatchMode=yes -o StrictHostKeyChecking=no"
         ]
 
+    print(rsync_cmd)
     exit(call(rsync_cmd))
 
 
