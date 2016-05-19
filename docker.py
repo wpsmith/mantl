@@ -218,6 +218,7 @@ def ci_log_cache():
     call("ssh-add")
     
     # parse json of tfstate for ip
+    ip = ""
     with open("terraform.tfstate") as tf:
         tfstate = json.load(tf)
         resources = [module['resources'] 
@@ -231,7 +232,7 @@ def ci_log_cache():
     dest = ".mantl-ci-log/{}".format(os.environ['TF_VAR_build_number'])
     rsync_cmd = [
         "rsync", "--super", "-a", src, dest, 
-        "-e", "ssh -i /local/ci -o BatchMode=yes -o StrictHostKeyChecking=no"
+        "-e", "ssh -i /root/.ssh/id_rsa -o BatchMode=yes -o StrictHostKeyChecking=no"
         ]
 
     exit(call(rsync_cmd))
