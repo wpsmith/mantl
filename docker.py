@@ -226,7 +226,7 @@ def ci_log_cache():
 
     src = "centos@{}:/var/log/*".format(ip)
     dest = ".mantl-ci-log/{}".format(os.environ['TF_VAR_build_number'])
-    rysnc_cmd = [
+    rsync_cmd = [
         "rsync", "--super", "-a", src, dest, 
         "-e", "ssh -i /local/ci -o BatchMode=yes -o StrictHostKeyChecking=no"
         ]
