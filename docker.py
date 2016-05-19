@@ -4,6 +4,7 @@ from __future__ import print_function
 import os
 import os.path
 import logging
+import json
 
 from os.path import exists, join
 from shlex import split
@@ -216,13 +217,15 @@ def ci_log_cache():
     link_or_generate_ssh_keys()
     call("ssh-add")
     
-    ip = ""
-    hostfile = check_output(["plugins/inventory/terraform.py", "--hostfile"])
-
-    for host in hostfile:
-        if "control-01" in host:
-            idx = host.index(" ")
-            ip = host[:idx]
+    # parse json of tfstate for ip
+    with open("terraform.tfstate") as tf:
+        tfstate = json.load(tf)
+        resources = [module['resources'] 
+                for module in tfstate['modules'] 
+                if len(module['resources']) > 0 and "control-nodes" in module['path']]
+        for resource in resources:
+            if "control-01" in resource['primary']['attributes']['tags.Name']:
+                ip = resource['primary']['attributes']['public_ip']
 
     src = "centos@{}:/var/log/cloud-init-output.log".format(ip)
     dest = ".mantl-ci-log/{}".format(os.environ['TF_VAR_build_number'])
