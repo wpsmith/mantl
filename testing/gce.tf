@@ -88,6 +88,6 @@ module "mantl-ci-worker-nodes" {
 
 module "network-lb" {
   source = "./terraform/gce/lb"
-  instances = "${module.edge-nodes.instances}"
+  instances = "${module.mantl-ci-edge-nodes.instances}"
   short_name = "mantl-ci-${var.build_number}"
 }
