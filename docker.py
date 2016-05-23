@@ -219,7 +219,7 @@ def ci_log_cache():
     
     # parse json of tfstate for ip
     ip = ""
-    with open("terraform.tfstate") as tf:
+    with open("/local/terraform.tfstate") as tf:
         tfstate = json.load(tf)
         resources = None 
         for module in tfstate['modules']: 
