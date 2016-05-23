@@ -25,9 +25,7 @@ after_script:
 sudo: required
 services:
 - docker
-addons:
-  artifacts:
-    s3_region: "us-west-1"
+
 notifications:
   slack:
     secure: eX3VgtKQ48rzKGdXpIZZVYINffI2wbqhqoJFUxHO1Zku6tXzbt0R+r3NVHo37wBID63bkXjYqjZuv+JRUtvf/XO51+QkTqCCZ6iC3lr6IEqRpzxXsmNYf+QPhuN2kvVTSyycHFXdwQLL7sCniFSmEcLdu6xMpobI4PUwi2OvHj4=

@@ -8,7 +8,7 @@ module "do-mantl-keypair" {
   public_key_filename = "~/.ssh/id_rsa.pub"
 }
 
-module "do-mantl-hosts" {
+module "mantl-ci" {
   source = "./terraform/digitalocean/hosts"
   ssh_key = "${module.do-mantl-keypair.keypair_id}"
   region_name = "sfo1" # this must be a region with metadata support

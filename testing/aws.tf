@@ -4,7 +4,7 @@ provider "aws" {
   region = "us-west-1"
 }
 
-module "aws-mantl-testing" {
+module "mantl-ci" {
   source = "./terraform/aws"
   availability_zone = "us-west-1b"
   ssh_username = "centos"

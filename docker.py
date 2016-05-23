@@ -221,11 +221,11 @@ def ci_log_cache():
     ip = ""
     with open("terraform.tfstate") as tf:
         tfstate = json.load(tf)
-        control_node_resources = None 
+        resources = None 
         for module in tfstate['modules']: 
-            if "control-nodes" in module['path']:
-                control_node_resources = module['resources']
-        for resource in control_node_resources.values():
+            if module['path'].startswith('mantl-ci'):
+                resources = module['resources']
+        for resource in resources.values():
             if 'tags.Name' in resource['primary']['attributes']:
                 if "control-01" in resource['primary']['attributes']['tags.Name']:
                     ip = resource['primary']['attributes']['public_ip']

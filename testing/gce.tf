@@ -41,7 +41,7 @@ module "gce-network" {
 #}
 
 
-module "control-nodes" {
+module "mantl-ci-control-nodes" {
   source = "./terraform/gce/instance"
   count = "${var.control_count}"
   datacenter = "${var.datacenter}"
@@ -56,7 +56,7 @@ module "control-nodes" {
   zones = "${var.zones}"
 }
 
-module "edge-nodes" {
+module "mantl-ci-edge-nodes" {
   source = "./terraform/gce/instance"
   count = "${var.edge_count}"
   datacenter = "${var.datacenter}"
@@ -71,7 +71,7 @@ module "edge-nodes" {
   zones = "${var.zones}"
 }
 
-module "worker-nodes" {
+module "mantl-ci-worker-nodes" {
   source = "./terraform/gce/instance"
   count = "${var.worker_count}"
   datacenter = "${var.datacenter}"
