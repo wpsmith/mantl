@@ -223,7 +223,7 @@ def ci_log_cache():
         tfstate = json.load(tf)
         resources = None 
         for module in tfstate['modules']: 
-            if module['path'].startswith('mantl-ci'):
+            if module['path'][1].startswith('mantl-ci'):
                 resources = module['resources']
         for resource in resources.values():
             if 'tags.Name' in resource['primary']['attributes']:
