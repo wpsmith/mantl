@@ -49,7 +49,7 @@ if __name__ == "__main__":
     setup = [
         (["terraform", "get"], 1),
         (["terraform", "plan"], 1),
-        (["terraform", "apply", "-state", "$TERRAFORM_STATE"], 1),
+        (["terraform", "apply", "-state", environ['TERRAFORM_STATE']], 1),
         (ap + ["playbooks/wait-for-hosts.yml"], 3),
         (ap + ["-e", "serial=0", "playbooks/upgrade-packages.yml"], 1),
         (ap + ["sample.yml"], 1),
