@@ -1,0 +1,26 @@
+---
+- name: authenticate with vault
+  command: vault auth "{{ vault_command_options }}" "{{ vault_root_token }}"
+  changed_when: false
+
+- name: enable cert auth backend
+  run_once: yes
+  command: vault auth-enable "{{ vault_command_options }}" cert
+  register: vault_enable_cert
+  failed_when: "{{ 'path is already in use' not in vault_enable_cert.stderr }}"
+
+- name: write host cert to authorized certificates
+  command: >
+    vault write "{{ vault_command_options }}"
+    "auth/cert/certs/{{ inventory_hostname }}"
+    "display_name={{ inventory_hostname }}"
+    "certificate=@{{ host_cert }}"
+
+- name: authenticate with vault using cert
+  sudo: yes
+  command: >
+    vault auth "{{ vault_command_options }}"
+    -method=cert
+    -client-cert="{{ host_cert }}"
+    -client-key="{{ host_key }}"
+  changed_when: false

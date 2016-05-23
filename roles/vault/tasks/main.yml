@@ -35,3 +35,4 @@
     - vault
 
 - include: bootstrap.yml
+- include: tls-auth.yml
