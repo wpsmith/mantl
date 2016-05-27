@@ -44,7 +44,7 @@ def run_cmds(cmds, fail_sequential=False):
 if __name__ == "__main__":
     ap = [
         "ansible-playbook", 
-        "-i", "plugins/inventory/terraform.py --root={}".format(environ['MANTL_CONFIG_DIR']),
+        "-i='plugins/inventory/terraform.py --root={}'".format(environ['MANTL_CONFIG_DIR']),
         "-e", "@security.yml", 
         "--private-key", "~/.ssh/id_rsa"
     ]
