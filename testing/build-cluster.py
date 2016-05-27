@@ -42,14 +42,18 @@ def run_cmds(cmds, fail_sequential=False):
     return to_return
 
 if __name__ == "__main__":
+    for e in environ:
+        print e
     ap = [
-        "ansible-playbook", "-e", "@security.yml", "--private-key",
-        "~/.ssh/id_rsa"
+        "ansible-playbook", 
+        "-i", "plugins/inventory/terraform.py --root={}".format(environ['MANTL_CONFIG_DIR'])
+        "-e", "@security.yml", 
+        "--private-key", "~/.ssh/id_rsa"
     ]
     setup = [
         (["terraform", "get"], 1),
         (["terraform", "plan"], 1),
-        (["terraform", "apply", "-state", environ['TERRAFORM_STATE']], 1),
+        (["terraform", "apply", "-state={}".format(environ['TERRAFORM_STATE'])], 1),
         (ap + ["playbooks/wait-for-hosts.yml"], 3),
         (ap + ["-e", "serial=0", "playbooks/upgrade-packages.yml"], 1),
         (ap + ["sample.yml"], 1),
