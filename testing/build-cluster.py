@@ -42,8 +42,6 @@ def run_cmds(cmds, fail_sequential=False):
     return to_return
 
 if __name__ == "__main__":
-    for e in environ:
-        print e
     ap = [
         "ansible-playbook", 
         "-i", "plugins/inventory/terraform.py --root={}".format(environ['MANTL_CONFIG_DIR'])
