@@ -11,9 +11,7 @@ location: "{{ ansible_hostname }}" # Openssl's "CN" ("Common Name"). Can't be ""
 # generate-certificates always includes DNS:localhost and IP:127.0.0.1.
 dns:
   - "{{ inventory_hostname }}"
-  - "{{ inventory_hostname }}.node"
   - "{{ inventory_hostname }}.node.consul"
-  - "*.service"
   - "*.service.consul"
 # What IP addresses will this certificate be valid for?
 ip:
