@@ -34,7 +34,7 @@
     path: "{{ destination }}"
     owner: root
     group: root
-    mode: 755
+    mode: 0755
 
 - name: generate certificates
   sudo: yes
@@ -52,3 +52,18 @@
     --destination "{{ destination }}"
   args:
     creates: "{{ destination }}/{{ prefix }}{% if prefix != '' %}.{% endif %}key"
+
+- name: set permissions on certificate files
+  sudo: yes
+  file:
+    state: file
+    path: "{{ item.path }}"
+    mode: "{{ item.mode }}"
+    owner: root
+    group: root
+  with_items:
+    - path: /etc/pki/mantl/cert
+      mode: 0644
+    - path: /etc/pki/mantl/key
+      mode: 0600
+    
