@@ -1,5 +1,5 @@
 ---
-- name: install traefik
+- name: install traefik-dynamic
   sudo: yes
   yum:
     name: "{{ traefik_package }}"
@@ -7,6 +7,20 @@
   tags:
     - traefik
     - bootstrap
+
+- name: write traefik config vars to the consul k/v
+  run_once: yes
+  command: >
+    consul-cli kv-write
+    {% if consul_acl_master_token is defined %}
+    --token={{ consul_acl_master_token }}
+    {% endif %}
+    config/traefik/{{ item.path }}
+    {{ item.value }}
+  with_items: "{{ traefik_configuration }}"
+  tags:
+    - consul
+    - traefik
 
 - name: create directory for local traefik service override
   sudo: yes
@@ -28,20 +42,6 @@
     mode: 0644
   notify:
     - reload systemd
-    - restart traefik
-  tags:
-    - traefik
-
-- name: configure traefik
-  sudo: yes
-  template:
-    src: traefik.toml.j2
-    dest: /etc/traefik/traefik.toml
-    owner: traefik
-    group: traefik
-    mode: 0644
-    backup: yes
-  notify:
     - restart traefik
   tags:
     - traefik

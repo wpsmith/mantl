@@ -1,7 +1,32 @@
 ---
-traefik_package: traefik-0.0.0
-traefik_marathon_endpoint: http://marathon.service.{{ consul_dns_domain }}:18080
-traefik_marathon_domain: marathon.localhost
+traefik_package: 'https://bintray.com/siddharthist/mantl-testing/download_file?file_path=traefik-dynamic-1.0.0-rc1.x86_64.rpm'
 
-# Do Marathon apps automatically get exposed (traefik default is false)
-traefik_marathon_expose_by_default: "true"
+traefik_marathon_endpoint: '"http://marathon.service.{{ consul_dns_domain }}:18080"'
+
+# Explicitly quoted options will be rendered as strings in traefik's TOML config.
+traefik_configuration:
+    - path: port
+      value: '":80"'
+    - path: logLevel
+      value: '"ERROR"'
+    - path: graceTimeOut
+      value: '10'
+
+    - path: web/address
+      value: '":8081"'
+    - path: web/CertFile
+      value: '"/etc/pki/tls/certs/host.cert"'
+    - path: web/KeyFile
+      value: '"/etc/pki/tls/private/host.key"'
+
+    - path: marathon/endpoint
+      value: "{{ traefik_marathon_endpoint }}"
+    - path: marathon/domain
+      value: '"marathon.localhost"'
+    - path: marathon/networkInterface
+      value: '"{{ ansible_default_ipv4["interface"] }}"' 
+    - path: marathon/watch
+      value: 'true'
+    # Do Marathon apps automatically get exposed? (traefik default is false)
+    - path: marathon/ExposedByDefault
+      value: 'true'
