@@ -6,25 +6,25 @@ traefik_marathon_endpoint: '"http://marathon.service.{{ consul_dns_domain }}:180
 # Explicitly quoted options will be rendered as strings in traefik's TOML config.
 traefik_configuration:
     - path: port
-      value: '":80"'
+      value: '\":80\"'
     - path: logLevel
-      value: '"ERROR"'
+      value: '\"ERROR\"'
     - path: graceTimeOut
       value: '10'
 
     - path: web/address
-      value: '":8081"'
+      value: '\":8081\"'
     - path: web/CertFile
-      value: '"/etc/pki/tls/certs/host.cert"'
+      value: '\"/etc/pki/tls/certs/host.cert\"'
     - path: web/KeyFile
-      value: '"/etc/pki/tls/private/host.key"'
+      value: '\"/etc/pki/tls/private/host.key\"'
 
     - path: marathon/endpoint
-      value: "{{ traefik_marathon_endpoint }}"
+      value: '\"{{ traefik_marathon_endpoint }}\"'
     - path: marathon/domain
-      value: '"marathon.localhost"'
+      value: '\"marathon.localhost\"'
     - path: marathon/networkInterface
-      value: '"{{ ansible_default_ipv4["interface"] }}"' 
+      value: '\"{{ ansible_default_ipv4["interface"] }}\"' 
     - path: marathon/watch
       value: 'true'
     # Do Marathon apps automatically get exposed? (traefik default is false)
