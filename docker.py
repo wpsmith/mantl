@@ -149,8 +149,8 @@ def ci_build():
 
     build_command = 'python2 ./testing/build-cluster.py'
     # Take different action for PRs from forks
-    if not os.environ['DOCKER_SECRETS']:
-        logging.warning("Secrets not available, only linting")
+    if not os.environ.get('DOCKER_SECRETS', False):
+        logging.warning('Secrets not available, only linting')
         build_command = 'python2 ./testing/build-cluster.py plan-only'
 
     if 'OS_IP' in os.environ:
