@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 from __future__ import print_function
 import subprocess
-from sys import exit
+from sys import exit, argv
 from time import sleep
 import os
 
@@ -53,7 +53,7 @@ if __name__ == "__main__":
         (["terraform", "plan"], 1),
     ]
     # TODO: replace this with either click or pypsi
-    if len(os.argv) < 2 or os.argv[1] != "plan-only":
+    if len(argv) < 2 or argv[1] != "plan-only":
         setup.extend([
             (["terraform", "apply"], 1),
             (ap + ["playbooks/wait-for-hosts.yml"], 3),
