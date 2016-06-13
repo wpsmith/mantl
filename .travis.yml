@@ -40,8 +40,7 @@ script:
   - docker run $DOCKER_ARGS -v $(pwd)/testing:/local -v $(pwd):/mantl $DOCKER_SECRETS $DOCKER_IMAGE "python docker.py ci-build"
 
 after_script:
-- docker run $DOCKER_ARGS -v $(pwd)/testing:/local -v $(pwd):/mantl $DOCKER_SECRETS
-  $DOCKER_IMAGE "python docker.py ci-destroy"
+  - if [ -n "$DOCKER_SECRETS" ]; then docker run $DOCKER_ARGS -v $(pwd)/testing:/local -v $(pwd):/mantl $DOCKER_SECRETS $DOCKER_IMAGE "python docker.py ci-destroy"; fi
 
 notifications:
   slack:
