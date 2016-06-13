@@ -50,7 +50,7 @@ if __name__ == "__main__":
     ]
     setup = [
         (["terraform", "get"], 1),
-        (["terraform", "plan"], 1),
+        (["terraform", "plan", "--input", "false", "--refresh", "false"], 1),
     ]
     # TODO: replace this with either click or pypsi
     if len(argv) < 2 or argv[1] != "plan-only":
