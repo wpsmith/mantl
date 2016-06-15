@@ -1,19 +1,19 @@
 # input variables
 variable control_count { default = 1 }
 variable control_size { default = 4096 }
-variable datacenter { default = "mi" }
+variable datacenter { default = "mantl" }
 variable domain { default = "example.com" }
 variable edge_count { default = 2 }
 variable edge_size { default = 4096 }
 variable image_name { default = "CENTOS_7_64" }
 variable region_name { default = "ams01" }
-variable short_name { default = "mi" }
+variable short_name { default = "mantl" }
 variable ssh_key { }
 variable worker_count { default = 3 }
 variable worker_size { default = 4096 }
 
 # create resources
-resource "softlayer_virtualserver" "control" {
+resource "softlayer_virtual_guest" "control" {
   count = "${var.control_count}"
   name = "${var.short_name}-control-${format("%02d", count.index+1)}"
   domain = "${var.domain}"
@@ -25,7 +25,7 @@ resource "softlayer_virtualserver" "control" {
   user_data = "{\"role\":\"control\",\"dc\":\"${var.datacenter}\"}"
 }
 
-resource "softlayer_virtualserver" "worker" {
+resource "softlayer_virtual_guest" "worker" {
   count = "${var.worker_count}"
   name = "${var.short_name}-worker-${format("%03d", count.index+1)}"
   domain = "${var.domain}"
@@ -37,7 +37,7 @@ resource "softlayer_virtualserver" "worker" {
   user_data = "{\"role\":\"worker\",\"dc\":\"${var.datacenter}\"}"
 }
 
-resource "softlayer_virtualserver" "edge" {
+resource "softlayer_virtual_guest" "edge" {
   count = "${var.edge_count}"
   name = "${var.short_name}-edge-${format("%02d", count.index+1)}"
   domain = "${var.domain}"
@@ -50,13 +50,13 @@ resource "softlayer_virtualserver" "edge" {
 }
 
 output "control_ips" {
-  value = "${join(\",\", softlayer_virtualserver.control.*.ipv4_address)}"
+  value = "${join(\",\", softlayer_virtual_guest.control.*.ipv4_address)}"
 }
 
 output "worker_ips" {
-  value = "${join(\",\", softlayer_virtualserver.worker.*.ipv4_address)}"
+  value = "${join(\",\", softlayer_virtual_guest.worker.*.ipv4_address)}"
 }
 
 output "edge_ips" {
-  value = "${join(\",\", softlayer_virtualserver.edge.*.ipv4_address)}"
+  value = "${join(\",\", softlayer_virtual_guest.edge.*.ipv4_address)}"
 }
