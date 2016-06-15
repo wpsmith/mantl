@@ -183,10 +183,6 @@ consul_opts.add_argument(
     default=True,
     help='enable Consul auth',
     dest='do_consul_ssl', )
-consul_opts.add_argument(
-    '--consul-dns-domain',
-    default='consul',
-    help='consul domain suffix')
 
 # Mesos security
 mesos_opts = parser.add_argument_group(
@@ -467,15 +463,7 @@ class Component(object):
 
 class Certificates(Component):
     def check(self):
-        return [self.domain, self.ca]
-
-    def domain(self):
-	with self.modify_security() as config:
-	    if 'consul_dns_domain' not in config:
-		config['consul_dns_domain'] = self.args.consul_dns_domain
-		print("set consul domain")
-	    else:
-		print('consul domain already set')
+        return [self.ca]
 
     def ca(self):
         "certificate authority"
