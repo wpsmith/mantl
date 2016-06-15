@@ -4,6 +4,7 @@ variable worker_count { default = 2 }
 variable edge_count { default = 1 }
 variable ssh_pass { default = "Green123$" }
 variable ssh_key { default = "~/.ssh/id_rsa.pub" }
+variable build_number {}
 
 provider "clc" {
   username = "test_user"

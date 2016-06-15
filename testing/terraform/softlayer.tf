@@ -1,3 +1,5 @@
+variable build_number {}
+
 provider "softlayer" {
   username = "test_username"
   api_key = "test_api_key"

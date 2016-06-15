@@ -1,3 +1,5 @@
+variable build_number {}
+
 provider "triton" {
   # taken from https://www.terraform.io/docs/providers/triton/index.html
   account      = "AccountName"

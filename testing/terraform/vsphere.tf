@@ -1,3 +1,5 @@
+variable build_number {}
+
 provider "vsphere" {
   vsphere_server = "test_server"
   user = "test_user"
