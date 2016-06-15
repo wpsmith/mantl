@@ -19,10 +19,9 @@ env:
   - TERRAFORM_FILE=testing/terraform/do.tf  DOCKER_SECRETS='-e DIGITALOCEAN_TOKEN'
   - TERRAFORM_FILE=testing/terraform/gce.tf DOCKER_SECRETS='-e GOOGLE_CREDENTIALS'
   # These providers are only linted using `terraform plan`, and have no secrets
-  - TERRAFORM_FILE=testing/terraform/clc.tf
+  - TERRAFORM_FILE=testing/terraform/clc.tf DOCKER_SECRETS='-e CLC_USERNAME -e CLC_PASSWORD'
   - TERRAFORM_FILE=testing/terraform/softlayer.tf
   - TERRAFORM_FILE=testing/terraform/triton.tf
-  - TERRAFORM_FILE=testing/terraform/vsphere.tf
 
 before_install:
   # Documentation for encrypting files is here: https://docs.travis-ci.com/user/encrypting-files/
