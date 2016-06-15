@@ -1,15 +1,13 @@
+variable build_number {}
+
 variable location { default = "CA1" }
 variable control_count { default = 3 }
 variable worker_count { default = 2 }
 variable edge_count { default = 1 }
 variable ssh_pass { default = "Green123$" }
 variable ssh_key { default = "~/.ssh/id_rsa.pub" }
-variable build_number {}
 
-provider "clc" {
-  username = "test_user"
-  password = "test_password"
-}
+provider "clc" {}
 
 resource "clc_group" "mantl" {
   location_id = "${var.location}"
