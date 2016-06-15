@@ -11,7 +11,7 @@ provider "clc" {}
 
 resource "clc_group" "mantl" {
   location_id = "${var.location}"
-  name = "mantl-ci-${var.build_number}"
+  name = "ci-${var.build_number}"
   parent = "Default Group"
 }
 
@@ -20,7 +20,7 @@ module "control-nodes" {
   location = "${var.location}"
   group_id = "${clc_group.mantl.id}"
   role = "control"
-  name = "mantl-ci-${var.build_number}-control"
+  name = "ct-${var.build_number}"
   count = "${var.control_count}"
   ssh_pass = "${var.ssh_pass}"
   ssh_key = "${var.ssh_key}"
@@ -31,7 +31,7 @@ module "edge-nodes" {
   location = "${var.location}"
   group_id = "${clc_group.mantl.id}"
   role = "edge"
-  name = "mantl-ci-${var.build_number}-edge"
+  name = "ed-${var.build_number}"
   count = "${var.edge_count}"
   ssh_pass = "${var.ssh_pass}"
   ssh_key = "${var.ssh_key}"
@@ -42,7 +42,7 @@ module "worker-nodes" {
   location = "${var.location}"
   group_id = "${clc_group.mantl.id}"
   role = "worker"
-  name = "mantl-ci-${var.build_number}-worker"
+  name = "wo-${var.build_number}"
   count = "${var.worker_count}"
   ssh_pass = "${var.ssh_pass}"
   ssh_key = "${var.ssh_key}"
