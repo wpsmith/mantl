@@ -22,7 +22,7 @@ env:
   # Secrets are available for CLC, but the build times out.
   - PROVIDER=clc DOCKER_SECRETS='-e CLC_USERNAME -e CLC_PASSWORD'
   - PROVIDER=softlayer
-  - PROVIDER=triton.tf
+  - PROVIDER=triton
 
 before_install:
   # Documentation for encrypting files is here: https://docs.travis-ci.com/user/encrypting-files/
