@@ -11,6 +11,8 @@ variable short_name { default = "mantl" }
 variable ssh_key { }
 variable worker_count { default = 3 }
 variable worker_size { default = 4096 }
+variable hourly_billing { default = true }
+variable local_disk { default = false }
 
 # create resources
 resource "softlayer_virtual_guest" "control" {
@@ -23,6 +25,8 @@ resource "softlayer_virtual_guest" "control" {
   cpu = 1
   ssh_keys = ["${var.ssh_key}"]
   user_data = "{\"role\":\"control\",\"dc\":\"${var.datacenter}\"}"
+  hourly_billing = "${var.hourly_billing}"
+  local_disk = "${var.hourly_billing}"
 }
 
 resource "softlayer_virtual_guest" "worker" {
@@ -35,6 +39,8 @@ resource "softlayer_virtual_guest" "worker" {
   cpu = 1
   ssh_keys = ["${var.ssh_key}"]
   user_data = "{\"role\":\"worker\",\"dc\":\"${var.datacenter}\"}"
+  hourly_billing = "${var.hourly_billing}"
+  local_disk = "${var.hourly_billing}"
 }
 
 resource "softlayer_virtual_guest" "edge" {
@@ -47,6 +53,8 @@ resource "softlayer_virtual_guest" "edge" {
   cpu = 1
   ssh_keys = ["${var.ssh_key}"]
   user_data = "{\"role\":\"edge\",\"dc\":\"${var.datacenter}\"}"
+  hourly_billing = "${var.hourly_billing}"
+  local_disk = "${var.hourly_billing}"
 }
 
 output "control_ips" {
