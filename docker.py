@@ -148,12 +148,16 @@ def ci_build():
         exit(0)
 
     build_command = 'python2 ./testing/build-cluster.py'
-    # Take different action for PRs from forks
+
     if not os.environ.get('DOCKER_SECRETS', False):
         logging.warning('Secrets not available, only linting')
         build_command = 'python2 ./testing/build-cluster.py plan-only'
 
-    if 'OS_IP' in os.environ:
+    elif os.environ.get('PROVIDER', '') == 'clc':
+        logging.warning('Full CI builds not supported on CLC, only linting')
+        build_command = 'python2 ./testing/build-cluster.py plan-only'
+
+    elif 'OS_IP' in os.environ:
         ssh_cmd = '''
 ssh -i {keypath} -p {ssh_port}
 -o BatchMode=yes -o StrictHostKeyChecking=no
