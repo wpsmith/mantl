@@ -140,13 +140,6 @@ def ci_build():
         logging.info("All of the changes were in documentation. Skipping build.")
         exit(0)
 
-    # Filter out commits that are pushes to non-master branches
-    ci_branch = os.environ['TRAVIS_BRANCH']
-    ci_is_pr = os.environ['TRAVIS_PULL_REQUEST']
-    if ci_branch is not 'master' and ci_is_pr is False:
-        logging.info("We don't want to build on pushes to branches that aren't master.")
-        exit(0)
-
     build_command = 'python2 ./testing/build-cluster.py'
 
     if not os.environ.get('DOCKER_SECRETS', False):
@@ -158,7 +151,7 @@ def ci_build():
         build_command = 'python2 ./testing/build-cluster.py plan-only'
 
     elif 'OS_IP' in os.environ:
-        ssh_cmd = '''
+        ssh_cmd_template = '''
 ssh -i {keypath} -p {ssh_port}
 -o BatchMode=yes -o StrictHostKeyChecking=no
 travis@{ssh_ip} /bin/sh -c '
@@ -167,18 +160,15 @@ ssh-add;
 cd ./mantl/{commit};
 {build_cmd}'
         '''
-        ssh_cmd = ssh_cmd.format(commit=os.environ['CI_HEAD_COMMIT'],
-                                 keypath='/local/ci',
-                                 ssh_port=os.environ['OS_PRT'],
-                                 ssh_ip=os.environ['OS_IP'],
-                                 build_cmd=build_command)
-        ssh_cmd = " ".join(ssh_cmd.splitlines())
+        ssh_cmd = ssh_cmd_template.format(commit=os.environ['CI_HEAD_COMMIT'],
+                                          keypath='/local/ci',
+                                          ssh_port=os.environ['OS_PRT'],
+                                          ssh_ip=os.environ['OS_IP'],
+                                          build_cmd=build_command)
+        build_cmd = " ".join(ssh_cmd.splitlines())
 
-        exit(call(split(ssh_cmd)))
-
-    else:
-        logging.info("Starting cloud provider test")
-        exit(call(split(build_command)))
+    logging.info("Starting cloud provider test")
+    exit(call(split(build_command)))
 
 
 def ci_destroy():
