@@ -153,7 +153,7 @@ def ci_build():
         logging.warning('Secrets not available, only linting')
         build_command = 'python2 ./testing/build-cluster.py plan-only'
 
-    elif os.environ.get('PROVIDER', '') == 'clc':
+    elif os.environ.get('PROVIDER', '') == 'clc' or 'clc' in os.environ.get('TERRAFORM_FILE', ''):
         logging.warning('Full CI builds not supported on CLC, only linting')
         build_command = 'python2 ./testing/build-cluster.py plan-only'
 
