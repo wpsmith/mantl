@@ -5,6 +5,7 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: root
+    group: root
   with_items:
     # CA public key
     - src: ssl/cacert.pem
@@ -53,6 +54,12 @@
   args:
     creates: "{{ destination }}/{{ prefix }}{% if prefix != '' %}.{% endif %}key"
 
+- name: create tls group
+  sudo: yes
+  group:
+    name: tls
+    state: present
+
 - name: set permissions on certificate files
   sudo: yes
   file:
@@ -60,10 +67,11 @@
     path: "{{ item.path }}"
     mode: "{{ item.mode }}"
     owner: root
-    group: root
+    group: "{{ item.group }}"
   with_items:
     - path: /etc/pki/mantl/cert
       mode: "0644"
+      group: root
     - path: /etc/pki/mantl/key
-      mode: "0600"
-    
+      mode: "0640"
+      group: tls
