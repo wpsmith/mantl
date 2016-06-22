@@ -36,7 +36,7 @@ mesos_consul_image_tag: v0.3.2
 mesos_consul_refresh: "7s"
 marathon_consul_image: ciscocloud/marathon-consul
 marathon_consul_image_tag: 0.2
-mantl_api_image: ciscocloud/mantl-api
-mantl_api_image_tag: 0.2.2
+mantl_api_image: siddharthist/mantl-api
+mantl_api_image_tag: latest
 mantl_api_config_url: ""
 mantl_api_config_file: ""

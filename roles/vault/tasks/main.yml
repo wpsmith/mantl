@@ -34,4 +34,12 @@
   tags:
     - vault
 
+- name: register vault with consul
+  command: >
+    consul-cli service-register
+    --port="{{ vault_default_port }}"
+    --id="vault"
+    vault
+
 - include: bootstrap.yml
+- include: mantl-api.yml

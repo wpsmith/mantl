@@ -1,3 +1,5 @@
 ---
 dependencies:
   - role: handlers
+  - role: mesos
+  - role: vault

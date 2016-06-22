@@ -1,0 +1,51 @@
+---
+- name: authenticate with vault
+  changed_when: no
+  run_once: yes
+  no_log: yes
+  command: vault auth "{{ vault_command_options }}" "{{ vault_root_token }}"
+
+- name: write mantl api secrets
+  run_once: yes
+  no_log: yes
+  command: >
+    vault write "{{ vault_command_options }}" "secret/mantl-api"
+    "{% if do_marathon_auth %}marathon-user={{ marathon_http_credentials.split(':')[0] }}{% endif %}"
+    "{% if do_marathon_auth %}marathon-password={{ marathon_http_credentials.split(':')[1] }}{% endif %}"
+    "{% if do_mesos_auth %}mesos-principal={{ mantl_api_principal }}{% endif %}"
+    "{% if do_mesos_auth %}mesos-secret={{ mantl_api_secret }}{% endif %}"
+
+- name: write mantl-api policy to disk
+  sudo: yes
+  run_once: yes
+  copy:
+    content: "{{ mantl_api_policy | to_nice_json }}"
+    dest: /tmp/mantl-api-policy.json
+    mode: 0644
+
+- name: write mantl-api policy
+  run_once: yes
+  command: vault policy-write "{{ vault_command_options }}" mantl-api /tmp/mantl-api-policy.json
+
+- name: delete mantl-api-policy from disk
+  sudo: yes
+  run_once: yes
+  file:
+    state: absent
+    path: /tmp/mantl-api-policy.json
+
+- name: create wrapped mantl-api token
+  run_once: yes
+  command: >
+    vault token-create
+    "{{ vault_command_options }}"
+    --display-name=mantl-api
+    --policy=mantl-api
+    --format=json
+  register: mantl_api_create_token
+
+- name: extract token from stdout
+  run_once: yes
+  changed_when: no
+  set_fact:
+    mantl_api_token: "{{ (mantl_api_create_token.stdout|from_json)['auth']['client_token'] }}"

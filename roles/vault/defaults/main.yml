@@ -1,5 +1,5 @@
 ---
-vault_package: vault-0.5.3
+vault_package: vault-0.6.0
 vault_default_port: 8200
 vault_command_options: --ca-cert=/etc/pki/CA/ca.cert
 
@@ -7,3 +7,10 @@ vault_init_json: '{
 	"secret_shares": 5,
 	"secret_threshold": 3
 }' # ansible lint doesn't like the line split between curly braces
+
+mantl_api_policy:
+  path:
+    secret/mantl-api:
+      capabilities:
+        - read
+        - list
