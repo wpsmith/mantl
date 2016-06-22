@@ -7,7 +7,9 @@
   run_once: yes
   command: vault auth-enable "{{ vault_command_options }}" cert
   register: vault_enable_cert
-  failed_when: "{{ 'path is already in use' not in vault_enable_cert.stderr }}"
+  failed_when: >
+    "{{ vault_enable_cert.rc != 0
+    and 'path is already in use' not in vault_enable_cert.stderr }}"
 
 - name: write host cert to authorized certificates
   command: >
